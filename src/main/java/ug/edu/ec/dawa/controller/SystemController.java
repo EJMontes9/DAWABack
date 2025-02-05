@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ug.edu.ec.dawa.entity.ManagerData;
 import ug.edu.ec.dawa.entity.Person;
+import ug.edu.ec.dawa.entity.dto.SaveManaDataDTO;
 import ug.edu.ec.dawa.service.SystemService;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class SystemController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<String> saveData(@RequestBody ManagerData managerData){
+    public ResponseEntity<String> saveData(@RequestBody SaveManaDataDTO managerData){
         try{
             return ResponseEntity.status(HttpStatus.CREATED).body(systemService.saveManagerData(managerData));
         } catch (Exception e) {
