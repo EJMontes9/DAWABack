@@ -35,8 +35,10 @@ public class AuthService {
 
         // Preparar la respuesta
         Map<String, String> response = new HashMap<>();
-        response.put("token", token);      // Retornar el token JWT
+        response.put("token", token);// Retornar el token JWT
+        response.put("username", user.getUsername());
         response.put("role", user.getRole()); // Retornar el rol del usuario
+        response.put("userId", String.valueOf(user.getId()));//Agregar el userId como string
 
         return response; // Retornar el token y el rol
     }

@@ -11,6 +11,7 @@ import ug.edu.ec.dawa.service.SystemService;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("api/v1/system")
 public class SystemController {
