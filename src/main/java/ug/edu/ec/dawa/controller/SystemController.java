@@ -61,4 +61,16 @@ public class SystemController {
         }
     }
 
+    @GetMapping("/manager-data")
+    public ResponseEntity<List<ManagerData>> getAllManagerData() {
+        try {
+            // Obtener todos los datos desde el servicio
+            List<ManagerData> allData = systemService.getAllManagerData();
+            return ResponseEntity.ok(allData);
+        } catch (Exception e) {
+            // Manejar errores en caso de que ocurra algo inesperado
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

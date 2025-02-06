@@ -84,6 +84,10 @@ public class SystemService {
                 .collect(Collectors.toList());
     }
 
+    public List<ManagerData> getAllManagerData() {
+        return managerDataRepository.findAll();
+    }
+
 
 
 }
