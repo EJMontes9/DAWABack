@@ -23,7 +23,7 @@ public class ManagerData {
     private Person teacher;
 
     @Lob
-    @Column(name = "document", columnDefinition = "BLOB")
+    @Column(name = "document", columnDefinition = "MEDIUMBLOB") // Cambiar BLOB a MEDIUMBLOB
     private byte[] document;
 
     private String documentName;

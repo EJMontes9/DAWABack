@@ -25,37 +25,50 @@ public class SystemService {
     }
 
     public String saveManagerData(SaveManaDataDTO dtoData) {
-        DocumentIn documento = dtoData.getDocument();
-        ManagerData data= new ManagerData();
+        DocumentIn[] documentos = dtoData.getDocument();
+
+        // Validación: asegúrate de que se proporcione al menos un documento
+        if (documentos.length == 0) {
+            throw new IllegalArgumentException("No se proporcionó ningún documento para guardar.");
+        }
+
+        // Conversión del primer documento
+        DocumentIn documento = documentos[0];
+        byte[] documentBytes = saveDocument(documento);
+
+        // Crear instancia de ManagerData y asignar valores
+        ManagerData data = new ManagerData();
         data.setStudent(dtoData.getStudent());
         data.setTeacher(dtoData.getTeacher());
-        data.setDocument(saveDocument(documento));
+        data.setDocument(documentBytes); // Guardar el documento como bytes
+        data.setDocumentName(documento.getName());
         data.setNote(dtoData.getNote());
         data.setObservation(dtoData.getObservation());
 
+        // Guarda la entidad ManagerData en la base de datos
         managerDataRepository.save(data);
+
         return "Datos guardados correctamente";
     }
 
     public byte[] saveDocument(DocumentIn document) {
-        // Convertir base64 a byte[]
+        if (document.getBase64() == null || document.getBase64().isEmpty()) {
+            throw new IllegalArgumentException("El documento Base64 está vacío.");
+        }
+
+        // Convertir Base64 a byte[]
         byte[] documentBytes = java.util.Base64.getDecoder().decode(document.getBase64());
 
-        // Crear instancia de ManagerData
-        ManagerData managerData = new ManagerData();
-        managerData.setDocument(documentBytes);
-        managerData.setDocumentName(document.getName());
+        // Validación adicional: limitar tamaño del documento (ejemplo: 16 MB = 16 * 1024 * 1024 bytes)
+        int maxFileSize = 16 * 1024 * 1024; // 16 MB
+        if (documentBytes.length > maxFileSize) {
+            throw new IllegalArgumentException(
+                    "El archivo es demasiado grande. Tamaño máximo permitido: 16 MB.");
+        }
 
-        // Aquí puedes asignar datos adicionales como estudiante/profesor, nota, observación, etc.
-        managerData.setNote(0.0); // Ejemplo: valores predeterminados
-        managerData.setObservation("Documento subido correctamente");
-
-        // Guardar en la base de datos
-        managerDataRepository.save(managerData);
-
-        // Retornar el array de bytes completo
         return documentBytes;
     }
+
 
 
     public List<Person> getStudents() {

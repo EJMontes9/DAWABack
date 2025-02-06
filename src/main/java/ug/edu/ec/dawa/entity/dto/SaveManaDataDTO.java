@@ -11,7 +11,7 @@ import ug.edu.ec.dawa.entity.Person;
 public class SaveManaDataDTO {
     private Person student;
     private Person teacher;
-    private DocumentIn document;
+    private DocumentIn[] document;
     private String documentName;
     private Double note;
     private String observation;

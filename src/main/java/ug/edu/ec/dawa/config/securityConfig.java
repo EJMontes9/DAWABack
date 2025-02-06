@@ -33,7 +33,15 @@ public class securityConfig {
                 .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Configuración CORS
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/document/*").permitAll()
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/odoo/**").permitAll()
+                        .requestMatchers("/api/v1/communications/historical/topic/**").permitAll()
+                        .requestMatchers(request ->
+                                request.getRequestURI().contains("swagger-ui") ||
+                                        request.getRequestURI().contains("api-docs") ||
+                                        request.getRequestURI().contains("swagger-resources"))
+                        .permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // Agregar filtro JWT

@@ -9,7 +9,9 @@ import ug.edu.ec.dawa.entity.Person;
 import ug.edu.ec.dawa.entity.dto.SaveManaDataDTO;
 import ug.edu.ec.dawa.service.SystemService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -23,13 +25,23 @@ public class SystemController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<String> saveData(@RequestBody SaveManaDataDTO managerData){
-        try{
-            return ResponseEntity.status(HttpStatus.CREATED).body(systemService.saveManagerData(managerData));
+    public ResponseEntity<Map<String, Object>> saveData(@RequestBody SaveManaDataDTO managerData) {
+        try {
+            // Respuesta exitosa
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", systemService.saveManagerData(managerData));
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            // Respuesta de error
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("success", false);
+            errorResponse.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
+
+
 
     @GetMapping("/get-students")
     public ResponseEntity<List<Person>> getStudents() {
